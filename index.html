@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>cubustat e cubiapp</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Gibo" />
+    <script src="immagini/header-attrs/header-attrs.js"></script>
+    <link href="immagini/remark-css/default.css" rel="stylesheet" />
+    <link href="immagini/remark-css/metropolis-fonts.css" rel="stylesheet" />
+    <link href="immagini/font-awesome/css/all.css" rel="stylesheet" />
+    <link href="immagini/font-awesome/css/v4-shims.css" rel="stylesheet" />
+    <link rel="stylesheet" href="metropolis_ustat.css" type="text/css" />
+    <link rel="stylesheet" href="specifici.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# cubustat e cubiapp
+## Cubi e interfaccia per estrarre i risultati
+### Gibo
+### (ultimo aggiornamento: 13.09.2021)
+
+---
+
+
+layout: true
+
+background-image: url(immagini/logoTI_slides.png)
+background-position: 1.5% 96.5%
+
+---
+
+
+
+
+# `cubustat` + `cubiapp` 
+
+- `cubustat` è un pacchetto `R` che contiene i cubi di dati pubblicati dall'Ustat (e i relativi metadati), tutti in formato "long" (`data.table` con le variabili come `factor` e una colonna con i valori).  
+
+--
+
+
+- `cubiapp` è un pacchetto `R` con un'applicazione shiny per filtrare, ridisporre ed esportare i risultati da dei cubi di dati.
+
+--
+
+- Entrambi i pacchetti possono essere usati in locale, oppure messi su un server. Vedi [gibostat.ch/shiny/cubiapp](https://www.gibostat.ch/shiny/cubiapp)
+
+---
+
+
+# Installazione e sorgenti
+
+I due pacchetti possono essere installati così:
+
+
+```r
+devtools::install_gitlab("gibonet/cubustat")
+devtools::install_gitlab("gibonet/cubiapp")
+```
+
+--
+
+I codici sorgenti dei due pacchetti sono consultabili a questi link:  
+- https://gitlab.com/gibonet/cubustat  
+- https://gitlab.com/gibonet/cubiapp  
+
+
+---
+
+
+# Esempi di utilizzo (1)
+
+Esempio "predefinito", con i cubi pubblicati sul sito dell'Ustat: 
+
+```r
+library(cubiapp)
+
+cubi_app4()
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-2-1.png" width="342" /&gt;
+
+---
+
+# Esempi di utilizzo (2)
+
+- Di default viene caricata l'applicazione che permette di scegliere tutti i cubi di dati che pubblichiamo sul sito dell'Ustat. L'applicazione prende i cubi dal pacchetto `cubustat`  
+
+--
+
+- È però possibile utilizzare qualsiasi cubo di dati. Il cubo deve essere una `data.table` in formato "long", con delle colonne di tipo `factor` che andranno a comporre i filtri, e una colonna con il valore (questa colonna può essere di qualsiasi tipo).
+
+
+---
+
+# Esempi di utilizzo (2)
+
+
+```r
+library(data.table)
+head(cubi_POL_01)
+```
+
+```
+##    anno comune_2011 cont_descrizione valore valore_f
+## 1: 1921 1000 Ticino         Iscritti  41807   41.807
+## 2: 1921 1000 Ticino          Votanti  29136   29.136
+## 3: 1921 1000 Ticino         Astenuti  12671   12.671
+## 4: 1921 1000 Ticino   Schede bianche     30       30
+## 5: 1921 1000 Ticino     Schede nulle    192      192
+## 6: 1921 1000 Ticino    Schede valide  28914   28.914
+```
+
+---
+
+
+```r
+str(cubi_POL_01)
+```
+
+```
+## Classes 'data.table' and 'data.frame':	24486 obs. of  5 variables:
+##  $ anno            : Factor w/ 22 levels "1921","1927",..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ comune_2011     : Factor w/ 159 levels "1000 Ticino",..: 1 1 1 1 1 1 1 2 2 2 ...
+##  $ cont_descrizione: Factor w/ 7 levels "Iscritti","Votanti",..: 1 2 3 4 5 6 7 1 2 3 ...
+##  $ valore          : int  41807 29136 12671 30 192 28914 NA 8 8 0 ...
+##  $ valore_f        : chr  "41.807" "29.136" "12.671" "30" ...
+##  - attr(*, ".internal.selfref")=&lt;externalptr&gt;
+```
+
+Il cubo ha 3 colonne di tipo `factor` (anno, comune_2011 e cont_descrizione), una colonna numerica (valore) e una colonna di tipo `character` (valore_f). Ecco un esempio che carica l'interfaccia con solo un cubo, e con la colonna `valore_f` come valore (vedi prossima slide) 
+
+---
+
+# Risultato del secondo esempio
+
+
+```r
+cubi_app4(choices = "cubi_POL_01", valore_tabella = "valore_f")
+```
+
+&lt;img src="esempio2.png" width="850" /&gt;
+
+---
+
+
+# Esempio statico con `cubustat` e `data.table`
+
+- Cubi contenuti in `cubustat`:
+
+```r
+library(cubustat)
+ls("package:cubustat")
+```
+
+```
+##  [1] "cubi_AFD_01"     "cubi_AFD_02"     "cubi_POL_01"     "cubi_POL_02"    
+##  [5] "cubi_RSS_01"     "cubi_RSS_02"     "cubi_RSS_03"     "cubi_SBA_01"    
+##  [9] "cubi_SBA_02"     "cubi_SCEN_01"    "cubi_SDL_01"     "cubi_SFPI_01"   
+## [13] "cubi_SHIS_01"    "cubi_SHIS_02"    "cubi_STATENT_01" "cubi_STATENT_02"
+## [17] "cubi_STATENT_03" "cubi_STATENT_04" "cubi_STATPOP_01" "cubi_STATPOP_02"
+```
+
+---
+
+# Filtrare e ridisporre con `data.table`
+
+- Scegliamo un cubo qualsiasi da `cubustat`:
+
+
+```r
+library(data.table)
+head(cubi_POL_02)
+```
+
+```
+##    anno comune_2011 cont_descrizione valore valore_f
+## 1: 1959 1000 Ticino         Iscritti  53767   53.767
+## 2: 1959 1000 Ticino          Votanti  42154   42.154
+## 3: 1959 1000 Ticino         Astenuti  11613   11.613
+## 4: 1959 1000 Ticino   Schede bianche    767      767
+## 5: 1959 1000 Ticino     Schede nulle   1156    1.156
+## 6: 1959 1000 Ticino    Schede valide  40131   40.131
+```
+
+
+---
+
+# Filtrare
+
+- Selezioniamo alcuni risultati relativi al Ticino e per alcuni anni (iscritti e votanti):
+
+```r
+res &lt;- cubi_POL_02[
+  anno %in% c("2003", "2007", "2011") &amp;
+    comune_2011 %in% "1000 Ticino" &amp;
+    cont_descrizione %in% c("Iscritti", "Votanti")
+]
+res
+```
+
+```
+##    anno comune_2011 cont_descrizione valore valore_f
+## 1: 2003 1000 Ticino         Iscritti 201754  201.754
+## 2: 2003 1000 Ticino          Votanti 119925  119.925
+## 3: 2007 1000 Ticino         Iscritti 206078  206.078
+## 4: 2007 1000 Ticino          Votanti 127969  127.969
+## 5: 2011 1000 Ticino         Iscritti 214119  214.119
+## 6: 2011 1000 Ticino          Votanti 125246  125.246
+```
+
+---
+
+# Ridisporre (`data.table::dcast()`)
+
+- ... e ridisponiamo i risultati con l'anno nelle righe e il tipo di risultato in colonna:
+
+
+```r
+dcast(res, anno ~ cont_descrizione, value.var = "valore_f")
+```
+
+```
+##    anno Iscritti Votanti
+## 1: 2003  201.754 119.925
+## 2: 2007  206.078 127.969
+## 3: 2011  214.119 125.246
+```
+
+--
+
+.font150[
+And that's all, folks!
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
