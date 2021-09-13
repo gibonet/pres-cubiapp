@@ -55,8 +55,8 @@ options(knitr.kable.NA = '')
 I due pacchetti possono essere installati così:
 
 ```{r eval=FALSE, echo=TRUE}
-devtools::install_gitlab("gibonet/cubustat")
-devtools::install_gitlab("gibonet/cubiapp")
+remotes::install_gitlab("gibonet/cubustat")
+remotes::install_gitlab("gibonet/cubiapp")
 ```
 
 --
