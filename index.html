@@ -25,8 +25,6 @@ class: center, middle, inverse, title-slide
 
 layout: true
 
-background-image: url(immagini/logoTI_slides.png)
-background-position: 1.5% 96.5%
 
 ---
 
@@ -144,21 +142,6 @@ cubi_app4(choices = "cubi_POL_01", valore_tabella = "valore_f")
 
 ---
 
-# Esempio con nuovi dati (inventati...)
-
-
-```r
-# Generazione di un cubo fittizio
-library(data.table)
-x &lt;- LETTERS[1:3]
-y &lt;- LETTERS[4:7]
-dati &lt;- expand.grid(x = x, y = y)
-setDT(dati)
-dati[ , value := rnorm(nrow(dati))]
-dati
-```
-
----
 
 # Esempio statico con `cubustat` e `data.table`
 

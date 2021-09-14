@@ -16,8 +16,6 @@ output:
 
 layout: true
 
-background-image: url(immagini/logoTI_slides.png)
-background-position: 1.5% 96.5%
 
 ---
 
@@ -120,20 +118,6 @@ knitr::include_graphics("esempio2.png")
 
 ---
 
-# Esempio con nuovi dati (inventati...)
-
-```{r echo=TRUE, eval=FALSE}
-# Generazione di un cubo fittizio
-library(data.table)
-x <- LETTERS[1:3]
-y <- LETTERS[4:7]
-dati <- expand.grid(x = x, y = y)
-setDT(dati)
-dati[ , value := rnorm(nrow(dati))]
-dati
-```
-
----
 
 # Esempio statico con `cubustat` e `data.table`
 
