@@ -4,7 +4,6 @@
     <title>cubustat e cubiapp</title>
     <meta charset="utf-8" />
     <meta name="author" content="Gibo" />
-    <script src="immagini/header-attrs/header-attrs.js"></script>
     <link href="immagini/remark-css/default.css" rel="stylesheet" />
     <link href="immagini/remark-css/metropolis-fonts.css" rel="stylesheet" />
     <link href="immagini/font-awesome/css/all.css" rel="stylesheet" />
@@ -19,7 +18,7 @@ class: center, middle, inverse, title-slide
 # cubustat e cubiapp
 ## Cubi e interfaccia per estrarre i risultati
 ### Gibo
-### (ultimo aggiornamento: 13.09.2021)
+### (ultimo aggiornamento: 14.09.2021)
 
 ---
 
@@ -80,7 +79,7 @@ library(cubiapp)
 cubi_app4()
 ```
 
-&lt;img src="index_files/figure-html/unnamed-chunk-2-1.png" width="342" /&gt;
+<div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div>
 
 ---
 
@@ -141,10 +140,25 @@ Il cubo ha 3 colonne di tipo `factor` (anno, comune_2011 e cont_descrizione), un
 cubi_app4(choices = "cubi_POL_01", valore_tabella = "valore_f")
 ```
 
-&lt;img src="esempio2.png" width="850" /&gt;
+![](esempio2.png)&lt;!-- --&gt;
 
 ---
 
+# Esempio con nuovi dati (inventati...)
+
+
+```r
+# Generazione di un cubo fittizio
+library(data.table)
+x &lt;- LETTERS[1:3]
+y &lt;- LETTERS[4:7]
+dati &lt;- expand.grid(x = x, y = y)
+setDT(dati)
+dati[ , value := rnorm(nrow(dati))]
+dati
+```
+
+---
 
 # Esempio statico con `cubustat` e `data.table`
 
