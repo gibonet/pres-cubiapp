@@ -29,6 +29,8 @@ knitr::opts_chunk$set(fig.width = 4.75, fig.height = 3.5, fig.retina = 3,
                       eval = TRUE)
 
 options(knitr.kable.NA = '')
+
+# rmarkdown::render("index.Rmd")
 ```
 
 
@@ -174,3 +176,13 @@ dcast(res, anno ~ cont_descrizione, value.var = "valore_f")
 .font150[
 And that's all, folks!
 ]
+
+
+---
+
+
+# Demo di `cubiapp`
+
+<iframe src ="https://gibostat.ch/shiny/cubiapp" height=500px width=1100px />
+
+
