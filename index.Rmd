@@ -70,10 +70,15 @@ I codici sorgenti dei due pacchetti sono consultabili a questi link:
 # Esempi di utilizzo (1)
 
 Esempio "predefinito", con i cubi pubblicati sul sito dell'Ustat: 
-```{r echo=TRUE, eval=TRUE}
+```{r echo=TRUE, eval=FALSE}
 library(cubiapp)
 
 cubi_app4()
+```
+
+
+```{r echo=FALSE, eval=TRUE}
+knitr::include_graphics("Screenshot_cubi_app4.png")
 ```
 
 ---
@@ -93,6 +98,7 @@ cubi_app4()
 
 ```{r echo=TRUE, eval=TRUE}
 library(data.table)
+library(cubustat)
 head(cubi_POL_01)
 ```
 
